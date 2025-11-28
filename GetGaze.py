@@ -117,7 +117,7 @@ class EyeTracking():
         # add at 10/20  是否是单点校准
         self.onePointCalibration = onePointCalibration
         # self.RayIntersect = RayPlaneIntersection(monitor_pixels, 25.5, user_camere_distance=400)        #500
-        # 15.6为屏幕尺寸
+        
         #
         self.RayIntersect = RayPlaneIntersection(monitor_pixels, 15.5, user_camere_distance=user_dis*10)  # 500   15.6
 
@@ -879,7 +879,6 @@ class EyeTracking():
         # 计算比例系数
         return Failed_or_not, self.compute_scales(left_eye_lists, right_eye_lists, point_lists)
 
-    # 再加一个点，回到屏幕中心
     def start_calibration_1(self):
         SCP = ShowCalibrationPoint('test.jpg', (1920, 1080), 150)
         # SCP.show_point()
@@ -953,7 +952,7 @@ class EyeTracking():
         point_lists = []
         headpose_lists = []
         ear_list = []
-        while i < 5:        # 6
+        while i < 5:        # 
             show_id = i%5
             point = SCP.show_point_i(show_id, WINDOW_NAME)  # show_point
             # process_biase_one_point_numpy_with_head
@@ -1431,7 +1430,7 @@ class EyeTracking():
         count = 0
         index = 0
         while True:
-            # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+            
             tracking_status = self.eye_tracking_status
             gaze_movement = testimg
             if tracking_status == 'stable':
@@ -1515,7 +1514,7 @@ class EyeTracking():
         # self.Videosave.stop_saving()
         # self.Videosave.release()
 
-    #在这里设置一个信号？
+  
     def show_website(self, image_list, win_sz=(1920,1080)):
 
         if len(image_list) < 2:
@@ -1535,7 +1534,7 @@ class EyeTracking():
             start_time = time.time()
             website = website_images[i]
             while True:
-                # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+                
                 tracking_status = self.eye_tracking_status
 
                 # gaze_movement = website.copy()
@@ -1597,7 +1596,7 @@ class EyeTracking():
         start_time = time.time()
 
         while True:
-            # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+            # 
             tracking_status = self.eye_tracking_status
 
             elaspe_time = time.time() - start_time
@@ -1632,10 +1631,10 @@ class EyeTracking():
 
         start_time = time.time()
         while True:
-            # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+            # 
             tracking_status = self.eye_tracking_status
             elaspe_time = time.time() - start_time
-            if elaspe_time <= 20.0:         #设置为10秒钟
+            if elaspe_time <= 20.0:         #
                 gaze_movement = image.copy()
             else:
                 break
@@ -1669,8 +1668,7 @@ class EyeTracking():
 
         show_app_name = True
 
-        # app_name_dict = {'ui1': '百度地图', 'ui2': '网易云音乐', 'ui3': '网易云音乐',
-        #                  'ui4': 'Zeep_life', 'ui5': '支付宝', 'ui6': '饿了么'}
+        
 
         app_name_dict = {'ui1': 'data/phone_app_name/ui1_name.bmp', 'ui2': 'data/phone_app_name/ui2_name.bmp',
                          'ui3': 'data/phone_app_name/ui3_name.bmp',
@@ -1695,7 +1693,7 @@ class EyeTracking():
         start_point_y1 = int(win_sz[1] / 2 - new_size[1] / 2)
 
         while True:
-            # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+            # 
             tracking_status = self.eye_tracking_status
             # elaspe_time = time.time() - start_time
             gaze_movement = background.copy()
@@ -1814,7 +1812,7 @@ class EyeTracking():
         count = 0
         index = 0
         while True:
-            # 只有稳定跟踪的时候显示眼球注视点，其余状态显示头部指向点
+           
             tracking_status = self.eye_tracking_status
 
             ret, frame = cap.read()
@@ -2094,7 +2092,7 @@ class EyeTracking():
     def detect_facial_expression(self, img):
         return self.FER.do_fer_for_single_Img(img)
 
-    # 判断头部是否运动
+
     def is_head_moving(self, head_pose_list, moving_thr, headTracking_to_eyetracking):
 
         # if len(head_pose_list) == 0:
@@ -2106,9 +2104,7 @@ class EyeTracking():
         headpose = np.mean(headpose, axis=0)
 
         mean_pitch, mean_yaw = headpose[0], headpose[1]
-        # 判断头部运动状态0,
-        # 当前的头部姿态与稳定跟踪时的头部姿态角的偏差超过阈值后，判断为头部运动
-
+        
         if abs(mean_pitch - self.head_pose_stable['pitch']) >= pitch_thr or \
                 abs(mean_yaw - self.head_pose_stable['yaw']) >= yaw_thr:
             if abs(pitch_now - mean_pitch) >= 2 or abs(yaw_now - mean_yaw) >= 2:
@@ -2121,12 +2117,12 @@ class EyeTracking():
                 if self.eye_tracking_status == 'moving':
                     # print('change to static...')
 
-                    self.eye_tracking_status = 'stable' # 运动状态转为静止状态'static'
+                    self.eye_tracking_status = 'stable' 
                     # 清空缓存
                     self.left_eye_list.clear()
                     self.right_eye_list.clear()
 
-                    Data_saving.clear_gaze()  # 清空注视点
+                    Data_saving.clear_gaze() 
                     self.static_to_stable_count = 0
         return headTracking_to_eyetracking, (mean_pitch, mean_yaw)
 
@@ -2217,12 +2213,11 @@ class EyeTracking():
         pitch_thr, yaw_thr = 2.0, 2.0       #2.5, 2.5
 
 
-        #开始的额时候是稳定跟踪-头部没有运动,稳定跟踪状态
         self.eye_tracking_status = 'stable'
 
         self.static_to_stable_count = 0
 
-        #判断是否越界
+
         self.cross_limitation = False
         self.cross_status = 'NORMAL'
         # self.pitch_cross_status = 'NORMAL'
@@ -2246,7 +2241,7 @@ class EyeTracking():
         save_gaze = False
         first_save = True
         init_time = 0.0
-        # 加一个鼠标响应事件
+
 
         # cv2.setMouseCallback('drawing', self.mouseResponse)
 
@@ -2286,7 +2281,7 @@ class EyeTracking():
                     print('expression: ', emotion_box[0])
                     Data_saving.save_emotion_box(emotion_box)
             # print('error 1')
-            #后面是眼动处理
+
             # t2 = time.time()
             left_pst, right_pst, pupil_center = face_mesh.process_img_1(frame)
 
@@ -2298,7 +2293,7 @@ class EyeTracking():
                 head_pose_list.append((pitch, yaw, roll))
                 headTracking_to_eyetracking, mean_angle = self.is_head_moving(head_pose_list, (pitch_thr, yaw_thr), headTracking_to_eyetracking)
 
-                # print('head tracking to eyetracking: ', headTracking_to_eyetracking)
+
                 mean_pitch, mean_yaw = mean_angle
                 # print('mean pitch: {}, mean yaw: {}'.format(mean_pitch, mean_yaw))
                 #判断是否越界
@@ -2344,8 +2339,7 @@ class EyeTracking():
 
                     Data_saving.save_cross(cross_limitation, cross_status)
 
-                # 计算头部指向坐标
-                # 添加7-23
+
                 # nose_1 = None
                 # if pupil_center is not False:
                 #     nose_list.append(pupil_center[2])
@@ -2375,8 +2369,6 @@ class EyeTracking():
 
                 self.startMap = True
 
-                # 计算眼角的运动量，然后更新瞳孔基准位置
-                #在运动的时候也时刻更新基准值
                 if self.eye_tracking_status in ['moving', 'static']:
                     # print('head  moving 0....')
                     pupil_datum = self.process_static(left_eye_corner_list, right_eye_corner_list)
@@ -2385,7 +2377,7 @@ class EyeTracking():
                     pupil_datum_right_list.append(pupil_datum[1])
 
                     self.static_to_stable_count += 1
-                    if self.static_to_stable_count == 1:                   # 130, 210帧调整时间, 180, 20
+                    if self.static_to_stable_count == 1:                   # 
                     #
                         left_pupil = np.array(pupil_datum_left_list)
                         left_pupil = np.mean(left_pupil, axis=0)
@@ -2397,13 +2389,12 @@ class EyeTracking():
                         # print('pupil datum: {}, {}'.format(left_pupil, right_pupil))
                         self.set_center_pupil(left_pupil, right_pupil)
 
-                        # 不更新眼角值-5-18
                         # self.revise_corner(left_corner, right_corner)
 
                         headpoint = Data_saving.get_headgaze()
                         self.center_one_point = (int(headpoint[0]), int(headpoint[1]))
 
-                        # 更新头部姿态角
+                     
                         self.head_pose_stable['pitch'], self.head_pose_stable['yaw'] = mean_pitch, mean_yaw
 
                         self.eye_tracking_status = 'stable'
@@ -2414,11 +2405,11 @@ class EyeTracking():
 
                         pupil_datum_left_list.clear()
                         pupil_datum_right_list.clear()
-                    #存放static_to_stable_count
+
                     Data_saving.save_static_to_stable_counts(self.static_to_stable_count)
 
 
-                if self.eye_tracking_status == 'stable':           #在稳定跟踪时候显示眼球注视位置
+                if self.eye_tracking_status == 'stable':           #
                     # print('eye tracking computation ....')
                     if len(self.left_eye_list) > 0:
                         left_eye = np.array(self.left_eye_list)
@@ -2452,7 +2443,7 @@ class EyeTracking():
 
                         mapy = 0 if mapy < 0 else mapy
                         mapy = win_sz[1] if mapy > win_sz[1] else mapy
-                        # add 10/30
+
 
                         # print('stable map_center: {} {}'.format(mapy, mapy))
 
@@ -2506,10 +2497,10 @@ class EyeTracking():
         pupil_datum_left_list = collections.deque(maxlen=datalen)
         pupil_datum_right_list = collections.deque(maxlen=datalen)
 
-        #修改与7-23
+
         pitch_thr, yaw_thr = 2.5, 2.5       #
 
-        #开始的额时候是稳定跟踪-头部没有运动,稳定跟踪状态
+
         self.eye_tracking_status = 'stable'
 
         self.static_to_stable_count = 0
@@ -2521,10 +2512,10 @@ class EyeTracking():
 
         mean_pitch, mean_yaw = 0.0, 0.0
 
-        # 开始存储
+
         self.Videosave.start_saving()
 
-        #线程开启
+
         # self.video_thread = threading.Thread(target=self.screen_video_saving_thread)
         # self.video_thread.start()
         saving_count = 0
@@ -2569,7 +2560,7 @@ class EyeTracking():
                     print('expression: ', emotion_box[0])
                     Data_saving.save_emotion_box(emotion_box)
             # print('error 1')
-            #后面是眼动处理
+
             # t2 = time.time()
             left_pst, right_pst, pupil_center = face_mesh.process_img_1(frame)
 
@@ -2584,8 +2575,8 @@ class EyeTracking():
                 # print('head tracking to eyetracking: ', headTracking_to_eyetracking)
                 mean_pitch, mean_yaw = mean_angle
 
-                # 计算头部指向坐标
-                # 添加7-23
+
+
                 # nose_1 = None
                 # if pupil_center is not False:
                 #     nose_list.append(pupil_center[2])
@@ -2613,7 +2604,7 @@ class EyeTracking():
 
                 self.startMap = True
 
-                # 计算眼角的运动量，然后更新瞳孔基准位置
+
                 if self.eye_tracking_status == 'static':
 
                     pupil_datum = self.process_static(left_eye_corner_list, right_eye_corner_list)
@@ -2633,13 +2624,12 @@ class EyeTracking():
                         # self.set_center_pupil(pupil_datum[0], pupil_datum[1])
                         self.set_center_pupil(left_pupil, right_pupil)
 
-                        # 不更新眼角值-5-18
+
                         # self.revise_corner(left_corner, right_corner)
 
                         headpoint = Data_saving.get_headgaze()
                         self.center_one_point = (int(headpoint[0]), int(headpoint[1]))
 
-                        # 更新头部姿态角
                         self.head_pose_stable['pitch'], self.head_pose_stable['yaw'] = mean_pitch, mean_yaw
 
                         self.eye_tracking_status = 'stable'
@@ -2650,9 +2640,9 @@ class EyeTracking():
 
                         pupil_datum_left_list.clear()
                         pupil_datum_right_list.clear()
-                    #存放static_to_stable_count
+
                     Data_saving.save_static_to_stable_counts(self.static_to_stable_count)
-                elif self.eye_tracking_status == 'stable':           #在稳定跟踪时候显示眼球注视位置
+                elif self.eye_tracking_status == 'stable':           
                     if len(self.left_eye_list) > 0:
                         left_eye = np.array(self.left_eye_list)
                         left_eye = np.mean(left_eye, axis=0)
@@ -2696,7 +2686,7 @@ class EyeTracking():
 
             if self.is_stop():
                 break
-        print('end of thread....')
+
 
     def runEyeTrackingWithSmooth_back_head_move(self, VideoCap, face_mesh, headposeModel, win_sz, coordinate_or_biase=True):
         # left_b = []
@@ -2720,7 +2710,7 @@ class EyeTracking():
 
         pitch_thr, yaw_thr = 2.5, 2.5          #2.5, 2.5
 
-        #开始的额时候是稳定跟踪-头部没有运动,稳定跟踪状态
+        
         self.eye_tracking_status = 'stable'
 
         self.static_to_stable_count = 0
@@ -2760,14 +2750,14 @@ class EyeTracking():
 
                 self.startMap = True
 
-                # 获取头动位置
+
                 pitch_now, yaw_now, _ = head_pose_list[-1]
                 headpose = np.array(head_pose_list)
                 headpose = np.mean(headpose, axis=0)
 
                 mean_pitch, mean_yaw = headpose[0], headpose[1]
-                # 判断头部运动状态0,
-                # 当前的头部姿态与稳定跟踪时的头部姿态角的偏差超过阈值后，判断为头部运动
+                # 
+               
 
                 if abs(mean_pitch - self.head_pose_stable['pitch']) >= pitch_thr or \
                         abs(mean_yaw - self.head_pose_stable['yaw']) >= yaw_thr:
@@ -2779,11 +2769,11 @@ class EyeTracking():
                         # print('moving to 1....')
                         if self.eye_tracking_status == 'moving':
                             # print('change to static...')
-                            self.eye_tracking_status = 'static'  # 运动状态转为静止状态
+                            self.eye_tracking_status = 'static'  # 
                             # 清空缓存
                             self.left_eye_list.clear()
                             self.right_eye_list.clear()
-                            Data_saving.clear_gaze()  # 清空注视点
+                            Data_saving.clear_gaze()
                             self.static_to_stable_count = 0
 
 
@@ -2797,10 +2787,9 @@ class EyeTracking():
                 #注释掉
                 # self.set_center_one_point((int(map_headx), int(map_heady)))
 
-                # 在静止状态下，需要注视一秒钟(20帧)头部pointing的点，然而转为稳定跟踪状态
+
                 # print('eye tracking status: ', self.eye_tracking_status)
 
-                # 计算眼角的运动量，然后更新瞳孔基准位置
                 if self.eye_tracking_status == 'static':
 
                     left_corner = np.array(left_eye_corner_list)
@@ -2809,11 +2798,10 @@ class EyeTracking():
                     right_corner = np.array(right_eye_corner_list)
                     right_corner = np.mean(right_corner, axis=0)
 
-                    # 左眼左眼角和右眼角
+
                     left_left = left_corner[0]
                     left_right = left_corner[1]
 
-                    # 右眼左眼角和右眼角
                     right_left = right_corner[0]
                     right_right = right_corner[1]
 
@@ -2830,14 +2818,14 @@ class EyeTracking():
                     # self.static_to_stable_right_eye_list.append(pupil_center[1])
 
                     self.static_to_stable_count += 1
-                    if self.static_to_stable_count == 5:                   # 130, 210帧调整时间, 180, 20
+                    if self.static_to_stable_count == 5:                   # 
                         # left_eye_n = np.array(self.static_to_stable_left_eye_list)
                         # left_eye_n = np.mean(left_eye_n, axis=0)
                         # right_eye_n = np.array(self.static_to_stable_right_eye_list)
                         # right_eye_n = np.mean(right_eye_n, axis=0)
 
                         # print('update pupil center: {}, {}'.format(left_eye_n, right_eye_n))
-                        # 更新瞳孔中心值
+
                         # print('update pupil...')
                         #
                         left_pupil = np.array(pupil_datum_left_list)
@@ -2849,13 +2837,12 @@ class EyeTracking():
                         # self.set_center_pupil(pupil_datum[0], pupil_datum[1])
                         self.set_center_pupil(left_pupil, right_pupil)
 
-                        # 不更新眼角值-5-18
+
                         # self.revise_corner(left_corner, right_corner)
 
                         # print('update center point...')
                         self.center_one_point = (int(map_headx), int(map_heady))
 
-                        # 更新头部姿态角
                         self.head_pose_stable['pitch'], self.head_pose_stable['yaw'] = mean_pitch, mean_yaw
 
                         self.eye_tracking_status = 'stable'
@@ -2877,11 +2864,11 @@ class EyeTracking():
                         # self.static_to_stable_left_eye_list.clear()
                         # self.static_to_stable_right_eye_list.clear()
 
-                    #存放static_to_stable_count
+
                     Data_saving.save_static_to_stable_counts(self.static_to_stable_count)
 
 
-                elif self.eye_tracking_status == 'stable':           #在稳定跟踪时候显示眼球注视位置
+                elif self.eye_tracking_status == 'stable':           #
 
                     # print('len of left eye list: ', len(self.left_eye_list))
                     # print('compute gaze point')
@@ -3021,14 +3008,14 @@ class EyeTracking():
 
             if self.is_stop():
                 break
-    def set_eyetracking_static(self):#手动禁止
+    def set_eyetracking_static(self)
         self.eye_tracking_status = 'static'
         self.left_eye_list.clear()
         self.right_eye_list.clear()
         self.static_to_stable_count = 0
         self.static_to_stable_left_eye_list.clear()
         self.static_to_stable_right_eye_list.clear()
-        Data_saving.clear_gaze()  # 清空注视点
+        Data_saving.clear_gaze() 
 
     def get_static_to_stable_count(self):
         return self.static_to_stable_count
